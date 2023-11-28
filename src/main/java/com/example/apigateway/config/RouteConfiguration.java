@@ -38,7 +38,7 @@ public class RouteConfiguration {
     @Bean
     public RouteLocator adminServiceCircuitBreaker(RouteLocatorBuilder builder){
         return builder.routes()
-                .route(r -> r.path("/api/admin/grades/**")
+                .route(r -> r.path("/api/admin/**")
                         .filters(f -> f
                                 .circuitBreaker(config -> config
                                         .setName("adminServiceCircuitBreaker")
@@ -58,7 +58,7 @@ public class RouteConfiguration {
                                         .setKeyResolver(userKeyResolver()))
                         )
                         .uri("lb://ADMIN-SERVICE"))
-                .route(r -> r.path("/api/auth/**")
+                .route(r -> r.path("/api/auth/signup")
                         .filters(f -> f
                                 .circuitBreaker(config -> config
                                         .setName("adminServiceAuthenticationCircuitBreaker")
@@ -170,7 +170,7 @@ public class RouteConfiguration {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
                 .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
                 .timeLimiterConfig(TimeLimiterConfig.custom().
-                        timeoutDuration(Duration.ofSeconds(2)).build()).build());
+                        timeoutDuration(Duration.ofSeconds(10)).build()).build());
     }
 
     @Bean
