@@ -11,7 +11,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import java.util.List;
 
-
 @Configuration
 @EnableWebFlux
 public class CorsGlobalConfiguration implements WebFluxConfigurer {
