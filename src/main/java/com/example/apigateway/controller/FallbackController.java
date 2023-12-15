@@ -1,8 +1,6 @@
 package com.example.apigateway.controller;
 
-
 import com.example.apigateway.service.dto.FallbackResponseDTO;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/fallback")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class FallbackController {
-
-    Environment environment;
 
     @GetMapping("/adminServiceGradesFallback")
     public ResponseEntity<FallbackResponseDTO> adminServiceGradesFallback() {

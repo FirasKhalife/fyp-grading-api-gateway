@@ -55,3 +55,11 @@ resilience4j:
       adminServieAuthenticationCircuitBreaker:
         timeoutDuration: 1s
         cancelRunningFuture: false
+
+app:
+  services:
+    address:
+      admin: http://localhost
+      evaluation: http://localhost
+      rubrics: http://localhost
+      notification: http://localhost
