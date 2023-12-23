@@ -16,13 +16,17 @@ public class ServiceAddrConfig {
             @Value("${app.services.address.admin}") String adminAddr,
             @Value("${app.services.address.evaluation}") String evaluationAddr,
             @Value("${app.services.address.rubrics}") String rubricsAddr,
-            @Value("${app.services.address.notification}") String notificationAddr
+            @Value("${app.services.address.notification}") String notificationAddr,
+            @Value("${app.services.address.registry}") String registryAddr,
+            @Value("${app.services.address.frontend}") String frontendAddr
     ) {
         addressesMap = Map.of(
                 "admin", adminAddr,
                 "evaluation", evaluationAddr,
                 "rubricsAddr", rubricsAddr,
-                "notification", notificationAddr
+                "notification", notificationAddr,
+                "registry", registryAddr,
+                "frontend", frontendAddr
         );
     }
 }

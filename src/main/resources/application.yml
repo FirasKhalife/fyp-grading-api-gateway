@@ -63,3 +63,5 @@ app:
       evaluation: http://localhost
       rubrics: http://localhost
       notification: http://localhost
+      registry: http://localhost
+      frontend: http://localhost
