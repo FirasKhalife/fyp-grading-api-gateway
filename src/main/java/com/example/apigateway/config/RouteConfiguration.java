@@ -148,22 +148,6 @@ public class RouteConfiguration {
     }
 
     @Bean
-    public RouteLocator defaultCircuitBreaker(RouteLocatorBuilder builder){
-        return builder.routes()
-                .route(r -> r.path("/")
-                        .filters(f -> f
-                                .circuitBreaker(config -> config
-                                    .setName("defaultCircuitBreaker")
-                                    .setFallbackUri("forward:/fallback/defaultCircuitBreaker"))
-                                .requestRateLimiter(config -> config
-                                        .setRateLimiter(redisRateLimiter()).setKeyResolver(userKeyResolver()))
-                        )
-                        .uri("http://localhost:8080"))
-                .build();
-    }
-
-
-    @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
                 .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
