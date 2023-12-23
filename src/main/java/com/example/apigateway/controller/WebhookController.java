@@ -32,4 +32,10 @@ public class WebhookController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{service}")
+    public ResponseEntity<String> printAddress(@PathVariable String service) {
+        String serviceAddress = addressesConfig.getAddressesMap().get(service);
+        return ResponseEntity.ok().body(serviceAddress);
+    }
+
 }
