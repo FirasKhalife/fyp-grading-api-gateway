@@ -1,16 +1,14 @@
-package com.example.apigateway.controller;
+package com.fypgrading.apigateway.controller;
 
-import com.example.apigateway.service.dto.FallbackResponseDTO;
+import com.fypgrading.apigateway.service.dto.FallbackResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/fallback")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class FallbackController {
 
     @GetMapping("/adminServiceGradesFallback")
@@ -24,7 +22,7 @@ public class FallbackController {
     }
 
     @GetMapping("adminServiceAuthenticationFallback")
-    public ResponseEntity<FallbackResponseDTO> adminServieAuthenticationFallback() {
+    public ResponseEntity<FallbackResponseDTO> adminServiceAuthenticationFallback() {
 
         FallbackResponseDTO fallbackResponseDTO = new FallbackResponseDTO(
                 "Admin Service is taking longer than usual to reach the authentication page or is down. Please try again later");

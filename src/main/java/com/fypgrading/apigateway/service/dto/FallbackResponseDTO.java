@@ -1,4 +1,4 @@
-package com.example.apigateway.service.dto;
+package com.fypgrading.apigateway.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

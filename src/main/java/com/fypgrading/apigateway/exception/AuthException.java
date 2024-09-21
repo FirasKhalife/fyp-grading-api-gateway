@@ -1,4 +1,4 @@
-package com.example.apigateway.exception;
+package com.fypgrading.apigateway.exception;
 
 /**
  * AuthException class

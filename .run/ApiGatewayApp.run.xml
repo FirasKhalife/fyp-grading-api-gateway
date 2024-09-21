@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ApiGatewayApp" type="Application" factoryName="Application">
+    <envs>
+      <env name="REGISTRY_SERVER_URL" value="http://localhost:8761/eureka/" />
+      <env name="RABBITMQ_HOST" value="localhost" />
+      <env name="RABBITMQ_PORT" value="5672" />
+      <env name="RABBITMQ_USERNAME" value="admin" />
+      <env name="RABBITMQ_PASSWORD" value="admin" />
+
+<!--      <env name="REGISTRY_SERVER_NAME" value="registry-server" />-->
+<!--      <env name="CONFIG_SERVER_NAME" value="config-server" />-->
+<!--      <env name="ADMIN_SERVICE_NAME" value="admin-service" />-->
+<!--      <env name="EVALUATION_SERVICE_NAME" value="evaluation-service" />-->
+<!--      <env name="NOTIFICATION_SERVICE_NAME" value="notification-service" />-->
+<!--      <env name="RUBRIC_SERVICE_NAME" value="rubric_service" />-->
+      <env name="SPRING_APPLICATION_NAME" value="api-gateway" />
+
+      <env name="SPRING_PROFILES_ACTIVE" value="dev" />
+      <env name="BUILD_VERSION" value="1.0" />
+      <env name="PORT" value="9191" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.fypgrading.apigateway.ApiGatewayApplication" />
+    <module name="api-gateway" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
