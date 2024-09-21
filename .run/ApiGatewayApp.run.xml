@@ -6,6 +6,9 @@
       <env name="RABBITMQ_PORT" value="5672" />
       <env name="RABBITMQ_USERNAME" value="admin" />
       <env name="RABBITMQ_PASSWORD" value="admin" />
+      <env name="REDIS_HOST" value="localhost" />
+      <env name="REDIS_PORT" value="6379" />
+      <env name="REDIS_PASSWORD" value="admin" />
 
 <!--      <env name="REGISTRY_SERVER_NAME" value="registry-server" />-->
 <!--      <env name="CONFIG_SERVER_NAME" value="config-server" />-->

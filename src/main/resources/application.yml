@@ -15,37 +15,11 @@ spring:
         locator:
           enabled: false # do not locate services and default routes from eureka, only explicitly coded routes
           lower-case-service-id: true
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
-
-#resilience4j:
-#  circuitbreaker:
-#    instances:
-#      adminServiceCircuitBreaker:
-#        registerHealthIndicator: true
-#        slidingWindowSize: 10
-#        permittedNumberOfCallsInHalfOpenState: 3
-#        slidingWindowType: COUNT_BASED
-#        waitDurationInOpenState: 5s
-#        failureRateThreshold: 5
-#        automaticTransitionFromOpenToHalfOpenEnabled: true
-#        event-consumer-buffer-size: 10
-#      adminServieAuthenticationCircuitBreaker:
-#        registerHealthIndicator: true
-#        slidingWindowSize: 10
-#        permittedNumberOfCallsInHalfOpenState: 3
-#        slidingWindowType: TIME_BASED
-#
-#  timelimiter:
-#    instances:
-#      adminServiceCircuitBreaker:
-#        timeoutDuration: 2s
-#        cancelRunningFuture: true
-#      adminServieAuthenticationCircuitBreaker:
-#        timeoutDuration: 1s
-#        cancelRunningFuture: false
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
 
 server:
   port: ${PORT}

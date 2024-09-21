@@ -3,29 +3,19 @@ package com.fypgrading.apigateway.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Configuration
-public class ResponseTraceFilter {
+public class ResponseTraceFilter implements GlobalFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(ResponseTraceFilter.class);
 
-    private final FilterUtility filterUtility;
-
-    public ResponseTraceFilter(FilterUtility filterUtility) {
-        this.filterUtility = filterUtility;
-    }
-
-    @Bean
-    public GlobalFilter postGlobalFilter() {
-        return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(() -> {
-            HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
-            String correlationId = filterUtility.getCorrelationId(requestHeaders);
-            logger.debug("Updated the correlation id to the outbound headers: {}", correlationId);
-            exchange.getResponse().getHeaders().add(FilterUtility.CORRELATION_ID, correlationId);
-        }));
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
+        logger.debug("Adding Response Time to response");
+        exchange.getResponse().getHeaders().add("X-Response-Time", String.valueOf(System.currentTimeMillis()));
+        return chain.filter(exchange);
     }
 }

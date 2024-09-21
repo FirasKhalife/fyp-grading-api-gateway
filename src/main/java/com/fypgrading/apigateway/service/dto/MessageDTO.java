@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FallbackResponseDTO {
+public class MessageDTO {
 
-    private String fallbackMessage;
+    private String message;
 
 }
 
