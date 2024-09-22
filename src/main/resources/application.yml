@@ -8,6 +8,11 @@ logging:
   level:
     root: INFO
 
+management:
+  metrics:
+    tags:
+      application: ${SPRING_APPLICATION_NAME}
+
 spring:
   cloud:
     gateway:

@@ -91,7 +91,7 @@ public class RouteConfiguration {
                     .requestRateLimiter(rateConfig -> rateConfig
                         .setRateLimiter(redisRateLimiter())
                         .setKeyResolver(userKeyResolver())))
-                .uri("lb://ADMIN-SERVER"))
+                .uri("lb://ADMIN-SERVICE"))
 
             /* Evaluation Service */
             .route("evaluation_service_route", r -> r
@@ -123,7 +123,7 @@ public class RouteConfiguration {
                     .requestRateLimiter(rateConfig -> rateConfig
                         .setRateLimiter(redisRateLimiter())
                         .setKeyResolver(userKeyResolver())))
-                .uri("lb://EVALUATION-SERVER"))
+                .uri("lb://EVALUATION-SERVICE"))
 
             /* Notification Service */
             .route("notification_service_route", r -> r
@@ -215,7 +215,7 @@ public class RouteConfiguration {
 
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(1, 1, 1);
+        return new RedisRateLimiter(3, 3, 3);
     }
 
     //TODO: Look into preventing DDoS, the resolver below only looks at every individual hostname
