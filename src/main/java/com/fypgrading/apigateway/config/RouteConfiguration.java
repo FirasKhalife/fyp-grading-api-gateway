@@ -26,23 +26,6 @@ public class RouteConfiguration {
     @Bean
     public RouteLocator routesConfig(RouteLocatorBuilder builder){
         return builder.routes()
-            /* Registry Server */
-            .route("registry_server_route", r -> r
-                .path("/eureka/**")
-                .filters(f -> f
-                    .stripPrefix(1) // Removes "/eureka"
-                    .circuitBreaker(config -> config
-                        .setName("registryServerCircuitBreaker")
-                        .setFallbackUri("forward:/fallbacks/registry-server"))
-                    .retry(retryConfig -> retryConfig
-                        .setMethods(HttpMethod.GET)
-                        .setRetries(3)
-                        .setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true))
-                    .requestRateLimiter(rateConfig -> rateConfig
-                        .setRateLimiter(redisRateLimiter())
-                        .setKeyResolver(userKeyResolver())))
-                .uri("lb://REGISTRY-SERVER"))
-
             /* Config Server */
             .route("config_server_route", r -> r
                 .path("/config/**")
