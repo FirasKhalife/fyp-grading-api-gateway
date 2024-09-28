@@ -9,6 +9,10 @@
       <env name="REDIS_HOST" value="localhost" />
       <env name="REDIS_PORT" value="6379" />
       <env name="REDIS_PASSWORD" value="admin" />
+      <env name="AUTH_SERVER_URL" value="http://localhost:7080/realms/master" />
+      <env name="ALLOWED_ORIGINS" value="http://localhost:[*]" />
+      <env name="ALLOWED_METHODS" value="GET,POST,PUT,DELETE,OPTIONS" />
+      <env name="ALLOWED_HEADERS" value="Authorization,Content-Type" />
 
 <!--      <env name="REGISTRY_SERVER_NAME" value="registry-server" />-->
 <!--      <env name="CONFIG_SERVER_NAME" value="config-server" />-->

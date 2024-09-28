@@ -26,5 +26,15 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  security:
+    cors:
+      allowed-origins: ${ALLOWED_ORIGINS}
+      allowed-methods: ${ALLOWED_METHODS}
+      allowed-headers: ${ALLOWED_HEADERS}
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${AUTH_SERVER_URL}/protocol/openid-connect/certs
+
 server:
   port: ${PORT}
