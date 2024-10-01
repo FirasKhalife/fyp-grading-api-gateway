@@ -18,6 +18,7 @@ public class AuthoritiesConverter implements Converter<Jwt, Collection<GrantedAu
 
         return ((List<String>) realmAccess.get("roles"))
             .stream()
+            .filter(roleName -> roleName.startsWith("ROLE_"))
             .map(roleName -> (GrantedAuthority) new SimpleGrantedAuthority(roleName))
             .toList();
     }

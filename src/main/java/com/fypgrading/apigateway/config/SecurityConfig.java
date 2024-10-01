@@ -33,7 +33,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         return serverHttpSecurity.authorizeExchange(exchanges -> exchanges
                 // TODO: revert when done
-                // .pathMatchers("/api/admin/**").hasAuthority("ADMIN")
+                // .pathMatchers("/api/admin/**").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.GET).permitAll()
                 .anyExchange().authenticated())
             .oauth2ResourceServer(oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec
