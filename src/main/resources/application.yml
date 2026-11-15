@@ -1,40 +1,80 @@
-info:
-  app:
-    name: ${SPRING_APPLICATION_NAME}
-    description: "FYP Grading project - API Gateway"
-    version: ${BUILD_VERSION}
-
-logging:
-  level:
-    root: INFO
-
-management:
-  metrics:
-    tags:
-      application: ${SPRING_APPLICATION_NAME}
-
 spring:
+  application:
+    name: api-gateway
+  config:
+    import: "optional:configserver:"
   cloud:
-    gateway:
+    config:
       discovery:
-        locator:
-          enabled: false # do not locate services and default routes from eureka, only explicitly coded routes
-          lower-case-service-id: true
+        enabled: true
+        service-id: config-server
+      fail-fast: false
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      password: ${REDIS_PASSWORD}
-
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
   security:
-    cors:
-      allowed-origins: ${ALLOWED_ORIGINS}
-      allowed-methods: ${ALLOWED_METHODS}
-      allowed-headers: ${ALLOWED_HEADERS}
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${AUTH_SERVER_URL}/protocol/openid-connect/certs
+          jwk-set-uri: ${AUTH_SERVER_URL:http://localhost:7080/realms/assay}/protocol/openid-connect/certs
+
+assay:
+  cors:
+    # The SPA origin(s); a comma-separated list of patterns.
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:[*]}
+  gateway:
+    rate-limit: {replenish-rate: 20, burst-capacity: 60}     # per client IP: browsing and autosave
+    heavy-limit: {replenish-rate: 1, burst-capacity: 5}      # per client IP: creating or resetting a demo copy
+    streams:
+      - {id: notification-stream, service: notification-service, paths: [/api/notifications/stream]}
+    heavy:
+      - {id: demo-copy, service: admin-service, paths: [/api/demo/session, /api/demo/session/reset], methods: [PUT, POST]}
+    routes:
+      - id: admin
+        service: admin-service
+        paths: [/api/demo/**, /api/me, /api/me/**, /api/assessments, /api/assessments/**, /api/teams, /api/teams/**,
+                /api/reviewers, /api/reviewers/**, /api/schedule, /api/overview, /api/overview/**]
+      - {id: evaluation, service: evaluation-service, paths: [/api/evaluations, /api/evaluations/**, /api/my-evaluations/**]}
+      - {id: rubric, service: rubric-service, paths: [/api/rubrics, /api/rubrics/**]}
+      - {id: notification, service: notification-service, paths: [/api/notifications, /api/notifications/**, /api/activity, /api/activity/**]}
 
 server:
-  port: ${PORT}
+  port: ${PORT:9191}
+  shutdown: graceful
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${REGISTRY_SERVER_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: "Assay API gateway"
+    version: ${BUILD_VERSION:dev}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - {name: admin-service, url: /v3/api-docs/admin-service}
+      - {name: evaluation-service, url: /v3/api-docs/evaluation-service}
+      - {name: rubric-service, url: /v3/api-docs/rubric-service}
+      - {name: notification-service, url: /v3/api-docs/notification-service}

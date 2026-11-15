@@ -1,4 +1,0 @@
-logging:
-  level:
-    web: DEBUG
-    com.fypgrading.apigateway: DEBUG
