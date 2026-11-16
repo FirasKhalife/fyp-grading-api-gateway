@@ -2,12 +2,10 @@ spring:
   application:
     name: api-gateway
   config:
-    import: "optional:configserver:"
+    # Shared settings from config-server (fyp-grading-config). Optional: this file is complete on its own.
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:8071}/config"
   cloud:
     config:
-      discovery:
-        enabled: true
-        service-id: config-server
       fail-fast: false
   data:
     redis:
@@ -46,6 +44,9 @@ server:
 
 eureka:
   client:
+    # Register and refresh quickly: the services start together and find each other (and the config server) by name.
+    initial-instance-info-replication-interval-seconds: 2
+    registry-fetch-interval-seconds: 5
     service-url:
       defaultZone: ${REGISTRY_SERVER_URL:http://localhost:8761/eureka/}
   instance:
