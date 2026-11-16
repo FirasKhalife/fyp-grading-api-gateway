@@ -15,12 +15,14 @@ public class FallbackController {
 
     @RequestMapping("/fallback/{service}")
     public ResponseEntity<ProblemDetail> fallback(@PathVariable String service) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.SERVICE_UNAVAILABLE,
-                "The demo is starting up, try again in a minute.");
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.SERVICE_UNAVAILABLE, "The demo is starting up, try again in a minute.");
         problem.setType(URI.create("https://assay.dev/problems/service-unavailable"));
         problem.setProperty("code", "service-unavailable");
         problem.setProperty("service", service);
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .header("Retry-After", "30").body(problem);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .header("Retry-After", "30")
+                .body(problem);
     }
 }

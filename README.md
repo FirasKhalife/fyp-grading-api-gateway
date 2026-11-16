@@ -53,3 +53,13 @@ paths closed. They also check that the routes come from configuration, test CORS
 client IP is chosen.
 
 Built on Spring Boot 4.0 and Spring Cloud Gateway (WebFlux) 2025.1, Java 25, with a layered, non-root image.
+
+## Lint and CI
+
+- **Formatting:** Spotless with palantir-java-format. `./mvnw spotless:apply` fixes it.
+- **Lint:** Checkstyle (`checkstyle.xml`) catches likely bugs and sloppy code.
+- The build checks both in the `validate` phase, so `./mvnw verify` runs the lint, the build and every test.
+- **GitHub Actions** (`.github/workflows/ci.yml`) runs on every pull request and on pushes to `master`:
+  - the lint
+  - `verify`, including the Testcontainers tests
+  - a build of the Docker image

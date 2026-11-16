@@ -28,23 +28,30 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain edge(ServerHttpSecurity http) {
-        return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .cors(c -> {
-                })
-                .authorizeExchange(auth -> auth
-                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/demo/personas").permitAll()
-                        .pathMatchers("/actuator/health/**", "/actuator/info", "/actuator/prometheus").permitAll()
-                        .pathMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll()
-                        .pathMatchers("/fallback/**").permitAll()
-                        .pathMatchers("/api/**").authenticated()
-                        .anyExchange().denyAll())
-                .oauth2ResourceServer(rs -> rs.jwt(jwt -> {
-                }).authenticationEntryPoint((exchange, e) -> problem(exchange, HttpStatus.UNAUTHORIZED,
-                        "unauthenticated", "Sign in again: the token is missing or expired.")))
-                .exceptionHandling(ex -> ex.accessDeniedHandler((exchange, e) -> problem(exchange, HttpStatus.FORBIDDEN,
-                        "forbidden", "This address isn't part of the public API.")))
+        return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(c -> {})
+                .authorizeExchange(auth -> auth.pathMatchers(HttpMethod.OPTIONS)
+                        .permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/demo/personas")
+                        .permitAll()
+                        .pathMatchers("/actuator/health/**", "/actuator/info", "/actuator/prometheus")
+                        .permitAll()
+                        .pathMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**")
+                        .permitAll()
+                        .pathMatchers("/fallback/**")
+                        .permitAll()
+                        .pathMatchers("/api/**")
+                        .authenticated()
+                        .anyExchange()
+                        .denyAll())
+                .oauth2ResourceServer(rs -> rs.jwt(jwt -> {})
+                        .authenticationEntryPoint((exchange, e) -> problem(
+                                exchange,
+                                HttpStatus.UNAUTHORIZED,
+                                "unauthenticated",
+                                "Sign in again: the token is missing or expired.")))
+                .exceptionHandling(ex -> ex.accessDeniedHandler((exchange, e) -> problem(
+                        exchange, HttpStatus.FORBIDDEN, "forbidden", "This address isn't part of the public API.")))
                 .build();
     }
 

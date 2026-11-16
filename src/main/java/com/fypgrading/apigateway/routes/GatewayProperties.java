@@ -14,12 +14,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @param heavyLimit  the same for {@code heavy} paths
  */
 @ConfigurationProperties("assay.gateway")
-public record GatewayProperties(List<ServiceRoute> routes, List<ServiceRoute> streams, List<ServiceRoute> heavy,
-                                Limit rateLimit, Limit heavyLimit) {
+public record GatewayProperties(
+        List<ServiceRoute> routes,
+        List<ServiceRoute> streams,
+        List<ServiceRoute> heavy,
+        Limit rateLimit,
+        Limit heavyLimit) {
 
-    public record ServiceRoute(String id, String service, List<String> paths, List<String> methods) {
-    }
+    public record ServiceRoute(String id, String service, List<String> paths, List<String> methods) {}
 
-    public record Limit(int replenishRate, int burstCapacity) {
-    }
+    public record Limit(int replenishRate, int burstCapacity) {}
 }
