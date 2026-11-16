@@ -24,7 +24,10 @@ assay:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost:[*]}
   gateway:
     rate-limit: {replenish-rate: 20, burst-capacity: 60}     # per client IP: browsing and autosave
-    heavy-limit: {replenish-rate: 1, burst-capacity: 5}      # per client IP: creating or resetting a demo copy
+    # Per client IP: creating or resetting a demo copy costs 60 tokens at 1 token/s, so one a minute, ten in a burst.
+    heavy-limit: {replenish-rate: 1, burst-capacity: 600, requested-tokens: 60}
+    # Addresses or CIDR blocks whose CF-Connecting-IP is believed (cloudflared). Empty: use the socket address.
+    trusted-proxies: ${TRUSTED_PROXIES:}
     streams:
       - {id: notification-stream, service: notification-service, paths: [/api/notifications/stream]}
     heavy:
@@ -53,6 +56,8 @@ eureka:
     prefer-ip-address: true
 
 management:
+  server:
+    port: ${MANAGEMENT_PORT:9192}   # actuator off the public port; never published
   endpoints:
     web:
       exposure:

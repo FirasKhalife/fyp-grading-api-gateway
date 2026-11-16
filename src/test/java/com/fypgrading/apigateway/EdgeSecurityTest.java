@@ -58,9 +58,29 @@ class EdgeSecurityTest {
         }
     }
 
+    @org.springframework.boot.test.web.server.LocalManagementPort
+    int managementPort;
+
+    /** Review M14: actuator (including prometheus) isn't on the public port; health lives on the management port. */
     @Test
-    void healthIsPublic() {
-        web.get().uri("/actuator/health").exchange().expectStatus().isOk();
+    void actuatorIsOnlyOnTheInternalManagementPort() {
+        for (String path : new String[] {"/actuator/health", "/actuator/prometheus"}) {
+            int status = web.get()
+                    .uri(path)
+                    .exchange()
+                    .returnResult(String.class)
+                    .getStatus()
+                    .value();
+            assertThat(status).as(path).isIn(401, 403, 404);
+        }
+        WebTestClient.bindToServer()
+                .baseUrl("http://localhost:" + managementPort)
+                .build()
+                .get()
+                .uri("/actuator/health")
+                .exchange()
+                .expectStatus()
+                .isOk();
     }
 
     @Test

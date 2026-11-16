@@ -1,5 +1,6 @@
 package com.fypgrading.apigateway.security;
 
+import com.fypgrading.apigateway.routes.Json;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ public class SecurityConfig {
                         .permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/demo/personas")
                         .permitAll()
+                        // Actuator is served on the management port (9192), which is never published (review M14).
                         .pathMatchers("/actuator/health/**", "/actuator/info", "/actuator/prometheus")
                         .permitAll()
                         .pathMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**")
@@ -74,8 +76,8 @@ public class SecurityConfig {
         response.setStatusCode(status);
         response.getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);
         String body = "{\"type\":\"https://assay.dev/problems/" + code + "\",\"title\":\"" + status.getReasonPhrase()
-                + "\",\"status\":" + status.value() + ",\"detail\":\"" + detail + "\",\"instance\":\""
-                + exchange.getRequest().getPath().value() + "\",\"code\":\"" + code + "\"}";
+                + "\",\"status\":" + status.value() + ",\"detail\":" + Json.string(detail) + ",\"instance\":"
+                + Json.string(exchange.getRequest().getPath().value()) + ",\"code\":\"" + code + "\"}";
         DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Mono.just(buffer));
     }

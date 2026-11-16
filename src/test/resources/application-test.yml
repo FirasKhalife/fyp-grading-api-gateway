@@ -7,3 +7,6 @@ spring:
 eureka:
   client:
     enabled: false
+management:
+  server:
+    port: 0
