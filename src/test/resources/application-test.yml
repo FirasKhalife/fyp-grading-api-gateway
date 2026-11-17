@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+eureka:
+  client:
+    enabled: false
+management:
+  server:
+    port: 0
+  # No Redis in unit tests (CI has none): keep its health indicator out of /actuator/health,
+  # otherwise health reports DOWN (503) and the management-port test fails.
+  health:
+    redis:
+      enabled: false
