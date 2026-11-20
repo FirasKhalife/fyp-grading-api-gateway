@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
@@ -26,6 +28,13 @@ import reactor.core.publisher.Mono;
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
+
+    /** Only tokens issued to our own clients ({@code azp}); Boot checks the issuer from {@code issuer-uri}. */
+    @Bean
+    OAuth2TokenValidator<Jwt> authorizedParty(
+            @Value("${assay.security.authorized-parties:assay-spa}") List<String> clients) {
+        return new AuthorizedParty(clients);
+    }
 
     @Bean
     SecurityWebFilterChain edge(ServerHttpSecurity http) {
