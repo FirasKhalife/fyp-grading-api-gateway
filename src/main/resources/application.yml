@@ -7,6 +7,13 @@ spring:
   cloud:
     config:
       fail-fast: false
+    # No bulkhead around the routes. The Resilience4J starter adds one by default: 25 calls in flight per route,
+    # shared by every visitor, and the 26th gets the "starting up" 503 at once. The per-IP rate limit and the
+    # services' own thread pools bound the load instead.
+    circuitbreaker:
+      bulkhead:
+        resilience4j:
+          enabled: false
   data:
     redis:
       host: ${REDIS_HOST:localhost}
